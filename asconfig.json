@@ -1,0 +1,13 @@
+{
+    "type": "lib",
+    "config": "air",
+	"compilerOptions": {
+		"source-path": [
+			"jhb0b/src"
+		],
+		"include-sources": [
+			"jhb0b/src"
+		],
+		"output": "jhb0b/bin/jhb0b-180927-1.swc"
+	}
+}
