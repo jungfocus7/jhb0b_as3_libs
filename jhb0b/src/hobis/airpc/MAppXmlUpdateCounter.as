@@ -5,15 +5,20 @@ package hobis.airpc
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
-	import jhb0b.utils.MArrayUtil;
 
 
 	public final class MAppXmlUpdateCounter
 	{
-		private static var _AppXmlFile:File;
+		private static const _rx1:RegExp = /<id>([^<]+?)<\/id>/;
+		
+		
+		private static var _ReplacedString:String = 'HobisApp180929Work124925172';
+		private static var _AppXmlFile:File;		
 
-		public static function Update():void
+		public static function Update(tReplacedString:String = null):void
 		{
+			if (tReplacedString != null) _ReplacedString = tReplacedString;
+			
 			_AppXmlFile = new File(File.applicationDirectory.nativePath);
 			_AppXmlFile = _AppXmlFile.resolvePath('META-INF\\AIR\\application.xml');
 			if (_AppXmlFile.exists)
@@ -25,42 +30,19 @@ package hobis.airpc
 			{
 				_AppXmlFile = null;
 			}
-		}
-
+		}			
 		private static function ppOpened(evt:Event):void
 		{
-			const trx1:RegExp = /<id>[\s\S]*?<\/id>/;
-			const trx2:RegExp = /<([^>]+)>/g;
-
-			var tXmlStr:String = _AppXmlFile.data.toString();
-			var tMatArr:Array = tXmlStr.match(trx1);
-			if (!MArrayUtil.is_empty(tMatArr))
+			var tLoadXmlStr:String = _AppXmlFile.data.toString();
+			if (_rx1.test(tLoadXmlStr))
 			{
-				var tIdTagStr:String = tMatArr[0];
-				var tIdValStr:String = tIdTagStr.replace(trx2, '');
-
-				var tOriVal:String;
-				var tNumVal:uint;
-				var tStrArr:Array = tIdValStr.split('-');
-				if (tStrArr != null)
-				{
-					if (tStrArr.length == 2)
-					{
-						tOriVal = tStrArr[0];
-						tNumVal = int(tStrArr[1]);
-					}
-					else
-					if (tStrArr.length == 1)
-					{
-						tOriVal = tStrArr[0];
-						tNumVal = 0;
-					}
-					tNumVal++;
-
-					var tIdNewStr:String = '<id>' + tOriVal + '-' + tNumVal + '<\/id>';
-					var tNewXmlStr:String = tXmlStr.replace(tIdTagStr, tIdNewStr);
-					ppSaveFile(tNewXmlStr);
-				}
+				var tNewXmlStr:String = tLoadXmlStr.replace(_rx1,
+					function():String {
+						var tstr1:String = arguments[0];
+						var tstr2:String = arguments[1];
+						return tstr1.replace(tstr2, _ReplacedString);
+					});
+				ppSaveFile(tNewXmlStr);
 			}
 			_AppXmlFile = null;
 		}
