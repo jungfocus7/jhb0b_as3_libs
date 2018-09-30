@@ -7,7 +7,15 @@
 	// #
 	public final class MDisplayObjectContainerUtil
 	{
-		//:: 자식객체 반복검출 (필터링 없음)
+		/**
+		 * ## 자식객체 반복검출 (필터링 없음)
+		 * <br/>
+		 * @param tcont:DisplayObjectContainer 	//Loop DisplayObjectContainer
+		 * @param tlf:Function 					//Loop Function
+		 * @param tlfpa:Array = null			//Loop Function Parameter Array
+		 * @param tlfs:Object = null			//Loop Function Scope
+		 * 
+		 */
 		public static function contLoop(
 									tcont:DisplayObjectContainer,	// Loop DisplayObjectContainer
 									tlf:Function,					// Loop Function

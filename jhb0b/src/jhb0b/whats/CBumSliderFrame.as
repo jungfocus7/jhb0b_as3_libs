@@ -1,13 +1,14 @@
 package jhb0b.whats
 {
 	import flash.display.MovieClip;
-	import flash.display.Stage;
 	import flash.events.MouseEvent;
+
+	import jhb0b.core.CMovieClipWrapperEx;
 	import jhb0b.events.CBumEvent;
-	import jhb0b.core.CMovieClipBase;
 
 
-	public final class CBumSliderFrame extends CMovieClipBase
+
+	public final class CBumSliderFrame extends CMovieClipWrapperEx
 	{
 		//- 슬라이더 업데이트
 		public static const ET_UPDATE:String = 'update';

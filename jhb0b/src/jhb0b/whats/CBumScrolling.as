@@ -3,11 +3,12 @@
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
-	import jhb0b.core.CEventBase;
+
+	import jhb0b.core.CEventCoreEx;
 	import jhb0b.events.CBumEvent;
 
 
-	public class CBumScrolling extends CEventBase
+	public class CBumScrolling extends CEventCoreEx
 	{
 		override public function dispose():void
 		{

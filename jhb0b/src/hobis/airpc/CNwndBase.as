@@ -4,6 +4,7 @@ package hobis.airpc
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.desktop.NativeApplication;
 	
 
 	public class CNwndBase extends Sprite
@@ -18,6 +19,7 @@ package hobis.airpc
 		
 		protected function ppInitOnce(evt:Event):void
 		{
+			_napp = NativeApplication.nativeApplication;
 			_own = this;
 			_stg = _own.stage;
 			_nwnd = _stg.nativeWindow;
@@ -26,6 +28,7 @@ package hobis.airpc
 			//MNwndHelper.align_rightBottom(_nwnd, 100, 100);
 		}		
 		
+		protected var _napp:NativeApplication;
 		protected var _own:Sprite;
 		protected var _stg:Stage;
 		protected var _nwnd:NativeWindow;

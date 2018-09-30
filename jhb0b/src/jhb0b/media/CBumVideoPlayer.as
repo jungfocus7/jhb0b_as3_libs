@@ -1,18 +1,11 @@
 ﻿package jhb0b.media
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.media.SoundTransform;
-	import flash.media.Video;
-	import flash.text.TextField;
-	import jhb0b.core.CContainerBase;
-	import jhb0b.core.IPlayer;
-	import jhb0b.core.IStream;
+
 	import jhb0b.events.CBumEvent;
 	import jhb0b.utils.MTimeUtil;
-	import jhb0b.whats.CBumButton;
-	import jhb0b.whats.CBumSliderFrame;
 
 
 	public class CBumVideoPlayer extends CBumAbstractPlayer

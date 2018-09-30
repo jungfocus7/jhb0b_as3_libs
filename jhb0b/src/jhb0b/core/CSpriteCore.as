@@ -1,7 +1,8 @@
 package jhb0b.core
 {
-	import jhb0b.tools.MDebugTool;
 	import flash.display.Sprite;
+
+	import jhb0b.tools.MDebugTool;
 
 
 	public class CSpriteCore extends Sprite implements IDisposable

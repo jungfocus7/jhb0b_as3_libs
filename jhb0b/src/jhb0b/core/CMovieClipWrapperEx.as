@@ -1,9 +1,17 @@
 package jhb0b.core
 {
-	public class CEventBase extends CEventCore implements IEnabled, INamer
+	import flash.display.MovieClip;
+
+	import jhb0b.core.CMovieClipWrapper;
+	import jhb0b.core.IEnabled;
+	import jhb0b.core.INamer;
+
+
+	public class CMovieClipWrapperEx extends CMovieClipWrapper implements IEnabled, INamer
 	{
-		public function CEventBase()
+		public function CMovieClipWrapperEx(tmc:MovieClip)
 		{
+			super(tmc);
 		}
 
 		protected var _enabled:Boolean = false;
@@ -25,5 +33,7 @@ package jhb0b.core
 		{
 			_name = tnm;
 		}
+
 	}
+
 }

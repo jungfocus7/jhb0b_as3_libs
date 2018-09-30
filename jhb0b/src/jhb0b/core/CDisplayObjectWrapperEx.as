@@ -1,9 +1,14 @@
 package jhb0b.core
 {
-	public class CSpriteBase extends CSpriteCore implements IEnabled, INamer
+	import flash.display.DisplayObject;
+	import flash.display.Stage;
+
+
+	public class CDisplayObjectWrapperEx extends CDisplayObjectWrapper implements IEnabled, INamer
 	{
-		public function CSpriteBase()
+		public function CDisplayObjectWrapperEx(tdo:DisplayObject)
 		{
+			super(tdo);
 		}
 
 		protected var _enabled:Boolean = false;

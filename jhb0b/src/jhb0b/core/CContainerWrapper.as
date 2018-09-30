@@ -1,27 +1,34 @@
 package jhb0b.core
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Stage;
 
 
-	public class CContainerWrapper extends CEventCore implements IContainerObserver
+	public class CContainerWrapper extends CEventCore
 	{
-		//:: 생성자
 		public function CContainerWrapper(cont:DisplayObjectContainer)
 		{
 			_cont = cont;
 		}
 
-		//- 컨테이너
 		protected var _cont:DisplayObjectContainer;
 		public function get_container():DisplayObjectContainer
 		{
 			return _cont;
 		}
 
-		//:: 객체패기
+		protected var _stage:Stage;
+		public function get_stage():Stage
+		{
+			return _stage;
+		}
+
+
 		override public function dispose():void
 		{
+			if (_cont == null) return;
 			_cont = null;
+			_stage = null;
 		}
 	}
 

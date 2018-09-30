@@ -1,6 +1,7 @@
 package jhb0b.core
 {
 	import flash.display.DisplayObject;
+	import flash.display.Stage;
 
 
 	public class CDisplayObjectWrapper extends CEventCore
@@ -16,9 +17,18 @@ package jhb0b.core
 			return _owner;
 		}
 
+		protected var _stage:Stage;
+		public function get_stage():Stage
+		{
+			return _stage;
+		}
+
+
 		override public function dispose():void
 		{
+			if (_owner == null) return;
 			_owner = null;
+			_stage = null;
 		}
 	}
 

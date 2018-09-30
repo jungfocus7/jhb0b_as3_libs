@@ -1,6 +1,7 @@
 package jhb0b.core
 {
 	import flash.display.MovieClip;
+	import flash.display.Stage;
 
 
 	public class CMovieClipWrapper extends CEventCore
@@ -8,6 +9,7 @@ package jhb0b.core
 		public function CMovieClipWrapper(tmc:MovieClip)
 		{
 			_owner = tmc;
+			_stage = _owner.stage;
 		}
 
 		protected var _owner:MovieClip;
@@ -16,9 +18,17 @@ package jhb0b.core
 			return _owner;
 		}
 
+		protected var _stage:Stage;
+		public function get_stage():Stage
+		{
+			return _stage;
+		}
+
 		override public function dispose():void
 		{
+			if (_owner == null) return;
 			_owner = null;
+			_stage = null;
 		}
 	}
 

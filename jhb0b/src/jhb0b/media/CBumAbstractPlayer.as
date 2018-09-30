@@ -4,13 +4,15 @@ package jhb0b.media
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.text.TextField;
-	import jhb0b.core.CContainerBase;
+
+	import jhb0b.core.CContainerWrapper;
 	import jhb0b.events.CBumEvent;
 	import jhb0b.whats.CBumButton;
 	import jhb0b.whats.CBumSliderFrame;
 
 
-	public class CBumAbstractPlayer extends CContainerBase
+
+	public class CBumAbstractPlayer extends CContainerWrapper
 	{
 		override public function dispose():void
 		{

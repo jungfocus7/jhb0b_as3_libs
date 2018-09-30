@@ -1,9 +1,13 @@
 package jhb0b.core
 {
-	public class CObjectBase extends CObjectCore implements IEnabled, INamer
+	import flash.display.DisplayObjectContainer;
+
+
+	public class CContainerWrapperEx extends CContainerWrapper implements IEnabled, INamer
 	{
-		public function CObjectBase()
+		public function CContainerWrapperEx(cont:DisplayObjectContainer)
 		{
+			super(cont);
 		}
 
 		protected var _enabled:Boolean = false;
