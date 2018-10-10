@@ -9,6 +9,7 @@ package jhb0b.core
 		public function CContainerWrapper(cont:DisplayObjectContainer)
 		{
 			_cont = cont;
+			_stage = _cont.stage;
 		}
 
 		protected var _cont:DisplayObjectContainer;

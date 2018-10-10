@@ -7,8 +7,10 @@ package hobis.airpc
 	import flash.events.Event;
 	import flash.filesystem.File;
 
+	import jhb0b.core.CSpriteCore;
 
-	public class CNwndBase extends Sprite
+
+	public class CNwndBase extends CSpriteCore
 	{
 		public function CNwndBase()
 		{
@@ -21,9 +23,7 @@ package hobis.airpc
 		protected function ppInitOnce(evt:Event):void
 		{
 			_napp = NativeApplication.nativeApplication;
-			_own = this;
-			_stg = _own.stage;
-			_nwnd = _stg.nativeWindow;
+			_nwnd = _stage.nativeWindow;
 			_appdf = new File(File.applicationDirectory.nativePath);
 
 			//_nwnd.title = 'CNwndBase~~';
@@ -31,8 +31,6 @@ package hobis.airpc
 		}
 
 		protected var _napp:NativeApplication;
-		protected var _own:Sprite;
-		protected var _stg:Stage;
 		protected var _nwnd:NativeWindow;
 		protected var _appdf:File;
 	}

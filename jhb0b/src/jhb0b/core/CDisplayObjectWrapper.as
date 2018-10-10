@@ -9,6 +9,7 @@ package jhb0b.core
 		public function CDisplayObjectWrapper(tdo:DisplayObject)
 		{
 			_owner = tdo;
+			_stage = _owner.stage;
 		}
 
 		protected var _owner:DisplayObject;
