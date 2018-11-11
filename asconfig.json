@@ -8,6 +8,6 @@
 		"include-sources": [
 			"jhb0b/src"
 		],
-		"output": "jhb0b/bin/jhb0b-as3-lib.swc"
+		"output": "jhb0b/bin/jhb0b_as3_libs.swc"
 	}
 }
