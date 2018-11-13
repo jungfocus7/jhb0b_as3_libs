@@ -2,7 +2,7 @@ package hbx.airpc
 {
 	import flash.filesystem.File;
 
-	
+
 	public final class MFileHelper
 	{
 		//:: 어플리케이션 디렉토리
@@ -20,36 +20,36 @@ package hbx.airpc
 		//:: 확장자명 반환
 		public static function get_ext(f:File):String
 		{
-			const t_reg:RegExp = /\.[^.]*$/i;
+			const treg:RegExp = /\.[^.]*$/i;
 
-			var t_np:String = f.nativePath;
-			var t_fi:int = t_np.search(t_reg);
-			if (t_fi > -1)
+			var tnp:String = f.nativePath;
+			var tfi:int = tnp.search(treg);
+			if (tfi > -1)
 			{
-				return t_np.substr(t_fi + 1);
+				return tnp.substr(tfi + 1);
 			}
 			else
 			{
 				return null;
 			}
 		}
-		
-		
-		
+
+
+
 		private static const _sept:String = '\\';
 
-		public static function get_fileName(tfp:String):String
+		public static function get_fileName(fp:String):String
 		{
-			var tss:Array = tfp.split(_sept);
+			var tss:Array = fp.split(_sept);
 			if ((tss != null) && (tss.length > 0))
 				return tss.pop();
 			else
 				return null;
 		}
 
-		public static function get_fileNameOnly(tfp:String):String
+		public static function get_fileNameOnly(fp:String):String
 		{
-			var tfnm:String = get_fileName(tfp);
+			var tfnm:String = get_fileName(fp);
 			if (tfnm != null)
 			{
 				return tfnm.replace(/\.[^\.]+$/, '');
@@ -57,23 +57,23 @@ package hbx.airpc
 			else return null;
 		}
 
-		public static function get_parentPath(tfp:String, tli:int = -1):String
+		public static function get_parentPath(fp:String, li:int = -1):String
 		{
-			var tss:Array = tfp.split(_sept);
+			var tss:Array = fp.split(_sept);
 			if ((tss != null) && (tss.length > 0))
-				return tss.slice(0, tli).join(_sept);
+				return tss.slice(0, li).join(_sept);
 			else
 				return null;
 		}
 
-		public static function get_relativePath(tfp:String, tli:int = -1):String
+		public static function get_relativePath(fp:String, li:int = -1):String
 		{
-			var tss:Array = tfp.split(_sept);
+			var tss:Array = fp.split(_sept);
 			if ((tss != null) && (tss.length > 0))
-				return tss.slice(tli).join(_sept);
+				return tss.slice(li).join(_sept);
 			else
 				return null;
-		}		
+		}
 	}
 
 }

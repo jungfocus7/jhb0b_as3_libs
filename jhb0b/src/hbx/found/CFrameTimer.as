@@ -7,32 +7,29 @@ package hbx.found
 	import hbx.balence.MControlProxy;
 	import hbx.core.CEventCore;
 	import hbx.core.IDisposable;
+	import hbx.core.CEventDispatcherCore;
 
 
 
-	public class CFrameTimer extends EventDispatcher implements IDisposable
+	public class CFrameTimer extends CEventDispatcherCore
 	{
-		public function dispose():void
-		{
-			this.stop(true);
-		}
-
-		//
-		//
-		////////////////////////////////////////////////////////////////////////////////////////////////////
 		public static const ET_END:String = MControlProxy.ET_END;
 		public static const ET_UPDATE:String = MControlProxy.ET_UPDATE;
 
-		//-
-		private static const _UseSprite:Sprite = new Sprite();
 
-		//
-		//:: 생성자
+		private static const _useSprite:Sprite = new Sprite();
+
 		public function CFrameTimer(delayFrame:int, repeatCount:int = 0)
 		{
 			this.set_delayFrame(delayFrame);
 			this.set_repeatCount(repeatCount);
 		}
+
+		public override function dispose():void
+		{
+			this.stop(true);
+		}
+
 
 		//- 현재 진행중 여부
 		private var _running:Boolean = false;
@@ -78,7 +75,7 @@ package hbx.found
 		}
 
 		//:: 엔터프래임
-		private function p_enterFrame(event:Event):void
+		private function pp_enterFrame(evt:Event):void
 		{
 			if (_nowFrame >= _delayFrame)
 			{
@@ -124,27 +121,25 @@ package hbx.found
 		{
 			if (!_running)
 			{
-				if ((_repeatCount == 0) ||
-					(_currentCount < _repeatCount))
+				if ((_repeatCount == 0) || (_currentCount < _repeatCount))
 				{
-					_UseSprite.addEventListener(Event.ENTER_FRAME, p_enterFrame);
+					_useSprite.addEventListener(Event.ENTER_FRAME, pp_enterFrame);
 					_running = true;
 				}
 			}
 		}
 
 		//:: 정지
-		public function stop(frameReset:Boolean = false):void
+		public function stop(bFrameReset:Boolean = false):void
 		{
 			if (_running)
 			{
-				_UseSprite.removeEventListener(Event.ENTER_FRAME, p_enterFrame);
-				if (frameReset)
+				_useSprite.removeEventListener(Event.ENTER_FRAME, pp_enterFrame);
+				if (bFrameReset)
 					_nowFrame = 0;
 				_running = false;
 			}
 		}
-		////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	}
 

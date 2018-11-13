@@ -19,45 +19,44 @@
 		private static var _lfs:FileStream;
 
 
-		// ::
-		private static function ppDateTimeStamp(d:Date = null):String
+		private static function ppDateTimeStamp(dt:Date = null):String
 		{
-			var t_d:Date = (d == null) ? new Date() : d;
+			if (dt == null) dt = new Date();
 
-			var t_yy:Number = t_d.fullYear;
-			var t_mm:Number = t_d.month + 1;
-			var t_dd:Number = t_d.date;
-			var t_tt:Number = t_d.hours;
-			var t_mi:Number = t_d.minutes;
-			var t_ss:Number = t_d.seconds;
-			var t_ms:Number = t_d.milliseconds;
+			var yy:Number = dt.fullYear;
+			var mm:Number = dt.month + 1;
+			var dd:Number = dt.date;
+			var hh:Number = dt.hours;
+			var mi:Number = dt.minutes;
+			var ss:Number = dt.seconds;
+			var ms:Number = dt.milliseconds;
 
-			var t_ds:String	=
-				MStringUtil.add_token(t_yy.toString().substr(2, 2), 2) +
-				MStringUtil.add_token(t_mm.toString(), 2) +
-				MStringUtil.add_token(t_dd.toString(), 2) +
-				MStringUtil.add_token(t_tt.toString(), 2) +
-				MStringUtil.add_token(t_mi.toString(), 2) +
-				MStringUtil.add_token(t_ss.toString(), 2) +
-				MStringUtil.add_token(t_ms.toString(), 3);
-			return t_ds;
+			var rv:String	=
+				MStringUtil.add_token(yy.toString().substr(2, 2), 2) +
+				MStringUtil.add_token(mm.toString(), 2) +
+				MStringUtil.add_token(dd.toString(), 2) +
+				MStringUtil.add_token(hh.toString(), 2) +
+				MStringUtil.add_token(mi.toString(), 2) +
+				MStringUtil.add_token(ss.toString(), 2) +
+				MStringUtil.add_token(ms.toString(), 3);
+			return rv;
 		}
 
-		public static function setting(tba:Boolean, tbb:Boolean = false):void
+		public static function setting(ba:Boolean, bb:Boolean = false):void
 		{
 			if (_adp == null)
 			{
 				_adp = File.applicationDirectory.nativePath;
 			}
 
-			if (tba)
+			if (ba)
 			{
 				if (_lf == null)
 				{
 					try
 					{
 						_lf = new File(_adp);
-						if (tbb)
+						if (bb)
 							_lf = _lf.resolvePath('Log-' + ppDateTimeStamp() + '.txt');
 						else
 							_lf = _lf.resolvePath('Log.txt');
@@ -88,10 +87,10 @@
 			}
 		}
 
-		public static function write(tv:String):void
+		public static function write(v:String):void
 		{
 			if (_lfs == null) return;
-			_lfs.writeUTFBytes(tv + '\r\n');
+			_lfs.writeUTFBytes(v + '\r\n');
 		}
 
 	}

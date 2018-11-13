@@ -11,10 +11,6 @@ package hbx.airpc
 
 	public class CNwndBase extends CSpriteCore
 	{
-		public function CNwndBase()
-		{
-		}
-
 		protected override function ppInitOnce(evt:Event):void
 		{
 			super.ppInitOnce(evt);

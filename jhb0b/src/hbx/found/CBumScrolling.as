@@ -10,12 +10,13 @@
 	import hbx.core.CDisplayObjectWrapper;
 
 
+
 	public class CBumScrolling extends CDisplayObjectWrapper implements IDisposable
 	{
 		public override function dispose():void
 		{
 			if (_content == null) return;
-			_content.removeEventListener(MouseEvent.MOUSE_WHEEL, pp_tdo_wheel);
+			_content.removeEventListener(MouseEvent.MOUSE_WHEEL, pp_content_wheel);
 			_content.mask = null;
 			_tmk = null;
 			_bsf.dispose();
@@ -23,14 +24,14 @@
 			super.dispose();
 		}
 
-		public function CBumScrolling(tdo:DisplayObject, ttmk:DisplayObject,
-							tsfmc:MovieClip, tsfbp:Number, tsfss:Number, tsfd:Number = 20)
+		public function CBumScrolling(
+			content:DisplayObject, tmk:DisplayObject, sfmc:MovieClip, sfbp:Number, sfss:Number, sfd:Number = 20)
 		{
-			super(tdo);
-			_tmk = ttmk;
+			super(content);
+			_tmk = tmk;
 			_content.mask = _tmk;
-			_bsf = new CBumSliderFrame(tsfmc, CBumSliderFrame.TYPE_VERTICAL, tsfbp, tsfss);
-			_sfd = tsfd;
+			_bsf = new CBumSliderFrame(sfmc, CBumSliderFrame.TYPE_VERTICAL, sfbp, sfss);
+			_sfd = sfd;
 			this.update_scrollSize();
 		}
 
@@ -56,22 +57,20 @@
 		private var _ssize:Number;
 
 
-		private function pp_tdo_wheel(evt:MouseEvent):void
+		private function pp_content_wheel(evt:MouseEvent):void
 		{
-			if (_content == null) return;
-
 			var ty:Number = _content.y;
 			if (evt.delta < 0) ty -= _sfd;
 			else ty += _sfd;
 
-			var tminv:Number = _sbase - _ssize;
-			var tmaxv:Number = _sbase;
+			var minv:Number = _sbase - _ssize;
+			var maxv:Number = _sbase;
 
-			if (ty < tminv) ty = tminv;
-			else if (ty > tmaxv) ty = tmaxv;
+			if (ty < minv) ty = minv;
+			else if (ty > maxv) ty = maxv;
 
 			var tr:Number = Math.abs(_sbase - ty) / _ssize;
-			//p_test(tr);
+			//pp_test(tr);
 			_bsf.set_ratio(tr);
 
 			_content.y = ty;
@@ -79,8 +78,6 @@
 
 		private function pp_bsf_update(evt:CEventCore):void
 		{
-			if (_content == null) return;
-
 			var ty:Number = _ssize * _bsf.get_ratio();
 			ty = _sbase - ty;
 			_content.y = ty;
@@ -96,27 +93,27 @@
 				this.set_enabled(false);
 		}
 
-
-
-		override public function set_enabled(tb:Boolean):void
+		public override function set_enabled(b:Boolean):void
 		{
-			if (_content == null) return;
-
-			super.set_enabled(tb);
-			if (_enabled)
+			if (b != _enabled)
 			{
-				_content.addEventListener(MouseEvent.MOUSE_WHEEL, pp_tdo_wheel);
-				_bsf.addEventListener(CBumSliderFrame.ET_UPDATE, pp_bsf_update);
-				_bsf.set_enabled(true);
-				_bsf.get_mvc().visible = true;
-			}
-			else
-			{
-				_content.removeEventListener(MouseEvent.MOUSE_WHEEL, pp_tdo_wheel);
-				_bsf.removeEventListener(CBumSliderFrame.ET_UPDATE, pp_bsf_update);
-				_bsf.set_enabled(false);
-				_bsf.get_mvc().visible = false;
+				_enabled = b;
+				if (_enabled)
+				{
+					_content.addEventListener(MouseEvent.MOUSE_WHEEL, pp_content_wheel);
+					_bsf.addEventListener(CBumSliderFrame.ET_UPDATE, pp_bsf_update);
+					_bsf.set_enabled(true);
+					_bsf.get_mvc().visible = true;
+				}
+				else
+				{
+					_content.removeEventListener(MouseEvent.MOUSE_WHEEL, pp_content_wheel);
+					_bsf.removeEventListener(CBumSliderFrame.ET_UPDATE, pp_bsf_update);
+					_bsf.set_enabled(false);
+					_bsf.get_mvc().visible = false;
+				}
 			}
 		}
+
 	}
 }

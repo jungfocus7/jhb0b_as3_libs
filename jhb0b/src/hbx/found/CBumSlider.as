@@ -1,14 +1,15 @@
 package hbx.found
 {
 	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 
 	import hbx.core.CEventCore;
-	import hbx.core.CMovieClipWrapper;
+	import hbx.core.CSpriteWrapper;
 
 
-	public class CBumSlider extends CMovieClipWrapper
+
+	public class CBumSlider extends CSpriteWrapper
 	{
 		//- 슬라이더 업데이트
 		public static const ET_UPDATE:String = 'update';
@@ -26,25 +27,12 @@ package hbx.found
 
 
 
-		override public function dispose():void
+		public function CBumSlider(sprt:Sprite, type:String = null, thumbName:String = null, trackName:String = null)
 		{
-			if (_mvc == null) return;
-			_mvc.removeEventListener(MouseEvent.MOUSE_DOWN, p_owner_mouseDown);
-			_type = null;
-			_thumb = null;
-			_track = null;
-			_rectArea = null;
-			super.dispose();
-		}
+			super(sprt);
 
-		//::
-		public function CBumSlider(tmc:MovieClip, type:String = null,
-							thumbName:String = null, trackName:String = null)
-		{
-			super(tmc);
-
-			_mvc.mouseChildren = false;
-			_mvc.buttonMode = true;
+			_sprt.mouseChildren = false;
+			_sprt.buttonMode = true;
 
 			if (type == null)
 				_type = TYPE_HORIZONTAL;
@@ -53,21 +41,33 @@ package hbx.found
 
 			if (thumbName == null)
 				thumbName = 'mc_thumb';
-			_thumb = _mvc[thumbName];
+			_thumb = _sprt[thumbName];
 			if (_thumb == null)
 				throw new Error('thumb is null.');
 
 			if (trackName == null)
 				trackName = 'mc_track';
-			_track = _mvc[trackName];
+			_track = _sprt[trackName];
 			if (_track == null)
 				throw new Error('track is null.');
 
-			p_rectAreaUpdate();
+			pp_rectAreaUpdate();
 
-			_mvc.addEventListener(MouseEvent.MOUSE_DOWN, p_owner_mouseDown);
+			_sprt.addEventListener(MouseEvent.MOUSE_DOWN, pp_mvc_mouseDown);
 			_enabled = true;
 		}
+
+		public override function dispose():void
+		{
+			if (_sprt == null) return;
+			_sprt.removeEventListener(MouseEvent.MOUSE_DOWN, pp_mvc_mouseDown);
+			_type = null;
+			_thumb = null;
+			_track = null;
+			_rectArea = null;
+			super.dispose();
+		}
+
 
 		//-
 		private var _type:String;
@@ -92,7 +92,7 @@ package hbx.found
 
 		//-
 		private var _rectArea:CRectArea;
-		private function p_rectAreaUpdate():void
+		private function pp_rectAreaUpdate():void
 		{
 			if (_rectArea == null)
 			{
@@ -119,7 +119,7 @@ package hbx.found
 		}
 
 		//:: 포지션 업데이트
-		private function p_thumbPositionUpdate(v:Number):void
+		private function pp_thumbPositionUpdate(v:Number):void
 		{
 			if (_type == TYPE_HORIZONTAL)
 			{
@@ -149,37 +149,37 @@ package hbx.found
 		}
 
 		//::
-		private function p_stage_mouseMove(evt:MouseEvent):void
+		private function pp_stage_mouseMove(evt:MouseEvent):void
 		{
-			var t_v:Number;
+			var tv:Number;
 
 			if (_type == TYPE_HORIZONTAL)
-				t_v = _mvc.mouseX - _rectArea.thumbWidthHalf;
+				tv = _sprt.mouseX - _rectArea.thumbWidthHalf;
 			else
 			if (_type == TYPE_VERTICAL)
-				t_v = _mvc.mouseY - _rectArea.thumbHeightHalf;
+				tv = _sprt.mouseY - _rectArea.thumbHeightHalf;
 
-			p_thumbPositionUpdate(t_v);
+			pp_thumbPositionUpdate(tv);
 			this.dispatchEvent(new CEventCore(ET_UPDATE));
 
 			evt.updateAfterEvent();
 		}
 
 		// ::
-		private function p_stage_mouseUp(evt:MouseEvent):void
+		private function pp_stage_mouseUp(evt:MouseEvent):void
 		{
-			_stage.removeEventListener(MouseEvent.MOUSE_UP, p_stage_mouseUp);
-			_stage.removeEventListener(MouseEvent.MOUSE_MOVE, p_stage_mouseMove);
+			_stage.removeEventListener(MouseEvent.MOUSE_UP, pp_stage_mouseUp);
+			_stage.removeEventListener(MouseEvent.MOUSE_MOVE, pp_stage_mouseMove);
 			this.dispatchEvent(new CEventCore(ET_MOUSE_UP));
 		}
 
 		// ::
-		private function p_owner_mouseDown(evt:MouseEvent):void
+		private function pp_mvc_mouseDown(evt:MouseEvent):void
 		{
-			_stage.addEventListener(MouseEvent.MOUSE_UP, p_stage_mouseUp);
-			_stage.addEventListener(MouseEvent.MOUSE_MOVE, p_stage_mouseMove);
+			_stage.addEventListener(MouseEvent.MOUSE_UP, pp_stage_mouseUp);
+			_stage.addEventListener(MouseEvent.MOUSE_MOVE, pp_stage_mouseMove);
 			this.dispatchEvent(new CEventCore(ET_MOUSE_DOWN));
-			p_stage_mouseMove(new MouseEvent(MouseEvent.MOUSE_MOVE));
+			pp_stage_mouseMove(new MouseEvent(MouseEvent.MOUSE_MOVE));
 		}
 
 
@@ -187,15 +187,15 @@ package hbx.found
 
 		public function get_ratio():Number
 		{
-			var t_rv:Number;
+			var rv:Number;
 
 			if (_type == TYPE_HORIZONTAL)
-				t_rv = (_rectArea.thumbX - _rectArea.left) / _rectArea.width;
+				rv = (_rectArea.thumbX - _rectArea.left) / _rectArea.width;
 			else
 			if (_type == TYPE_VERTICAL)
-				t_rv = (_rectArea.thumbY - _rectArea.top) / _rectArea.height;
+				rv = (_rectArea.thumbY - _rectArea.top) / _rectArea.height;
 
-			return t_rv;
+			return rv;
 		}
 		public function set_ratio(v:Number):void
 		{
@@ -206,46 +206,39 @@ package hbx.found
 				v = 1;
 
 
-			var t_v:Number;
+			var tv:Number;
 
 			if (_type == TYPE_HORIZONTAL)
-				t_v = Math.round(_rectArea.left + (v * _rectArea.width));
+				tv = Math.round(_rectArea.left + (v * _rectArea.width));
 			else
 			if (_type == TYPE_VERTICAL)
-				t_v = Math.round(_rectArea.top + (v * _rectArea.height));
+				tv = Math.round(_rectArea.top + (v * _rectArea.height));
 
-			p_thumbPositionUpdate(t_v);
+			pp_thumbPositionUpdate(tv);
 		}
 
-		//::
+
 		public function rectAreaUpdate():void
 		{
-			p_rectAreaUpdate();
+			pp_rectAreaUpdate();
 		}
 
 
-		override public function get_enabled():Boolean
-		{
-			return _enabled;
-		}
-
-		override public function set_enabled(b:Boolean):void
+		public override function set_enabled(b:Boolean):void
 		{
 			if (b != _enabled)
 			{
-				_mvc.mouseEnabled = b;
+				_sprt.mouseEnabled = b;
 				_enabled = b;
 			}
 		}
+
 	}
 }
 
-final class CRectArea
-{
-	public function CRectArea()
-	{
-	}
 
+internal final class CRectArea
+{
 	public var thumbFirstX:Number;
 	public var thumbFirstY:Number;
 

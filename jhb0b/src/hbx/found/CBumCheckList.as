@@ -11,22 +11,23 @@ package hbx.found
 	import hbx.core.CEventCore;
 	import hbx.core.IDisposable;
 	import hbx.found.CBumButton;
+	import hbx.core.CEventDispatcherCore;
 
 
 
-	public class CBumCheckList extends EventDispatcher implements IDisposable
+	public class CBumCheckList extends CEventDispatcherCore
 	{
 		private static const _regex1:RegExp = /\d+?$/;
-		private static function ppSortDisplayObject1(tdo1:DisplayObject, tdo2:DisplayObject):int
+		private static function ppSortDisplayObject1(dpo1:DisplayObject, dpo2:DisplayObject):int
 		{
 			try
 			{
-				var tn1:uint = uint(tdo1.name.match(_regex1)[0]);
-				var tn2:uint = uint(tdo2.name.match(_regex1)[0]);
-				if (tn1 < tn2)
+				var nb1:uint = uint(dpo1.name.match(_regex1)[0]);
+				var nb2:uint = uint(dpo2.name.match(_regex1)[0]);
+				if (nb1 < nb2)
 					return -1;
 				else
-				if (tn1 > tn2)
+				if (nb1 > nb2)
 					return 1;
 				else
 					return 0;
@@ -36,61 +37,60 @@ package hbx.found
 			return 0;
 		}
 
-		public static function contLoop(tcont:DisplayObjectContainer, tfstr:String,
-											tfarr:Array = null):CBumCheckList
+		public static function contLoop(dpoc:DisplayObjectContainer, fstr:String, farr:Array = null):CBumCheckList
 		{
-			var tta:Array;
+			var tarr:Array = null;
 
-			for (var tl:int = tcont.numChildren, ti:int = 0; ti < tl; ti++)
+			for (var l:int = dpoc.numChildren, i:int = 0; i < l; i++)
 			{
-				var tmc:MovieClip = tcont.getChildAt(ti) as MovieClip;
-				if ((tmc != null) && (tmc.name.indexOf(tfstr) == 0))
+				var mc:MovieClip = dpoc.getChildAt(i) as MovieClip;
+				if ((mc != null) && (mc.name.indexOf(fstr) == 0))
 				{
-					if (tta == null) tta = [];
-					tta.push(tmc);
+					if (tarr == null) tarr = [];
+					tarr.push(mc);
 				}
 			}
 
-			if (tta != null)
+			if (tarr != null)
 			{
-				tta.sort(ppSortDisplayObject1);
-				return new CBumCheckList(tta, tfarr);
+				tarr.sort(ppSortDisplayObject1);
+				return new CBumCheckList(tarr, farr);
 			}
 			else
 				return null;
 		}
 
 
+
 		public static const ET_CLICK:String = MouseEvent.CLICK;
 		public static const ET_CHANGE:String = Event.CHANGE;
 
 
-		public function dispose():void
+		public function CBumCheckList(targets:Array, frameArr:Array = null)
+		{
+			for (var l:uint = targets.length, i:uint = 0; i < l; i++)
+			{
+				var bbtn:CBumButton = new CBumButton(targets[i], frameArr, true, true);
+				bbtn.addEventListener(CBumButton.ET_CLICK, pp_bbtn_click);
+				if (_items == null) _items = [];
+				_items.push(bbtn);
+				_dicIdx[bbtn] = i;
+			}
+			set_enabled(true);
+		}
+
+		public override function dispose():void
 		{
 			if (_items == null) return;
-			var t_l:uint = _items.length;
-			for (var i:uint = 0; i < t_l; i ++)
+			for (var l:uint = _items.length, i:uint = 0; i < l; i++)
 			{
-				var t_bbtn:CBumButton = _items[i];
-				t_bbtn.dispose();
+				var bbtn:CBumButton = _items[i];
+				bbtn.dispose();
 			}
 			_dicIdx = null;
 			_items = null;
 		}
 
-		public function CBumCheckList(targets:Array, frameArr:Array = null)
-		{
-			var t_l:uint = targets.length;
-			for (var i:uint = 0; i < t_l; i ++)
-			{
-				var t_bbtn:CBumButton = new CBumButton(targets[i], frameArr, true, true);
-				t_bbtn.addEventListener(CBumButton.ET_CLICK, p_bbtn_click);
-				if (_items == null) _items = [];
-				_items.push(t_bbtn);
-				_dicIdx[t_bbtn] = i;
-			}
-			p_set_enabled(true);
-		}
 
 		private var _items:Array;
 		public function get_items():Array
@@ -99,35 +99,23 @@ package hbx.found
 		}
 
 		private var _dicIdx:Dictionary = new Dictionary();
-		private function p_get_dicIdx(bbtn:CBumButton):uint
+		private function pp_get_dicIdx(bbtn:CBumButton):uint
 		{
 			return _dicIdx[bbtn];
 		}
 
 
-		private var _enabled:Boolean = false;
-		private function p_set_enabled(b:Boolean):void
+		public override function set_enabled(b:Boolean):void
 		{
 			if (b != _enabled)
 			{
 				_enabled = b;
-				var t_l:uint = _items.length;
-				for (var i:uint = 0; i < t_l; i ++)
+				for (var l:uint = _items.length, i:uint = 0; i < l; i ++)
 				{
-					var t_bbtn:CBumButton = _items[i];
-					t_bbtn.set_enabled(_enabled);
+					var bbtn:CBumButton = _items[i];
+					bbtn.set_enabled(_enabled);
 				}
 			}
-		}
-
-		public function get_enabled():Boolean
-		{
-			return _enabled;
-		}
-
-		public function set_enabled(b:Boolean):void
-		{
-			p_set_enabled(b);
 		}
 
 
@@ -142,24 +130,24 @@ package hbx.found
 		}
 
 
-		private function p_bbtn_click(evt:CEventCore):void
+		private function pp_bbtn_click(evt:CEventCore):void
 		{
 			if (evt != null)
 				this.dispatchEvent(new CEventCore(ET_CLICK));
 
-			var t_bbtn:CBumButton = CBumButton(evt.currentTarget);
-			var t_i:uint = p_get_dicIdx(t_bbtn);
-			p_set_selectedIndex(t_i, true);
+			var bbtn:CBumButton = CBumButton(evt.currentTarget);
+			var i:uint = pp_get_dicIdx(bbtn);
+			pp_set_selectedIndex(i, true);
 		}
 
 
 		private var _selectIndex:int = -1;
-		private function p_unselectedIndex(be:Boolean):void
+		private function pp_unselectedIndex(be:Boolean):void
 		{
 			if (_selectIndex > -1)
 			{
-				var t_bbtn:CBumButton = _items[_selectIndex];
-				t_bbtn.set_selected(false);
+				var bbtn:CBumButton = _items[_selectIndex];
+				bbtn.set_selected(false);
 				_selectIndex = -1;
 
 				if (be)
@@ -167,13 +155,13 @@ package hbx.found
 			}
 		}
 
-		private function p_set_selectedIndex(idx:int, be:Boolean):void
+		private function pp_set_selectedIndex(idx:int, be:Boolean):void
 		{
 			if ((idx > -1) && (idx < _items.length))
 			{
 				if (idx != _selectIndex)
 				{
-					p_unselectedIndex(false);
+					pp_unselectedIndex(false);
 					_selectIndex = idx;
 					var t_bbtn:CBumButton = _items[_selectIndex];
 					t_bbtn.set_selected(true);
@@ -181,7 +169,7 @@ package hbx.found
 				else
 				{
 					if (_isToggleMode)
-						p_unselectedIndex(false);
+						pp_unselectedIndex(false);
 					else
 						be = false;
 				}
@@ -199,26 +187,26 @@ package hbx.found
 
 		public function set_selectedIndex(idx:int):void
 		{
-			p_set_selectedIndex(idx, false);
+			pp_set_selectedIndex(idx, false);
 		}
 
 		public function set_selectedIndexDispatch(idx:int):void
 		{
-			p_set_selectedIndex(idx, true);
+			pp_set_selectedIndex(idx, true);
 		}
 
 		public function unselect():void
 		{
-			p_unselectedIndex(false);
+			pp_unselectedIndex(false);
 		}
 
 		public function unselectDispatch():void
 		{
-			p_unselectedIndex(true);
+			pp_unselectedIndex(true);
 		}
 
 
-		private function p_get_itemAt(idx:int):CBumButton
+		private function pp_get_itemAt(idx:int):CBumButton
 		{
 			if ((idx > -1) && (idx < _items.length))
 				return _items[idx];
@@ -228,12 +216,12 @@ package hbx.found
 
 		public function get_selectedItem():CBumButton
 		{
-			return p_get_itemAt(_selectIndex);
+			return pp_get_itemAt(_selectIndex);
 		}
 
 		public function get_itemAt(idx:int):CBumButton
 		{
-			return p_get_itemAt(idx);
+			return pp_get_itemAt(idx);
 		}
 
 	}

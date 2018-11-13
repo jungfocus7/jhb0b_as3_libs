@@ -17,6 +17,16 @@
 
 
 
+		public function CFrameHelper(mvc:MovieClip)
+		{
+			super(mvc);
+			_mvc.stop();
+			_totalFrames = _mvc.totalFrames;
+			_beginFrame = _mvc.currentFrame;
+			_endFrame = _beginFrame;
+			_currentFrame = _beginFrame;
+		}
+
 		public override function dispose():void
 		{
 			if (_mvc == null) return;
@@ -24,15 +34,6 @@
 		}
 
 
-		public function CFrameHelper(tmc:MovieClip)
-		{
-			super(tmc);
-			_mvc.stop();
-			_totalFrames = _mvc.totalFrames;
-			_beginFrame = _mvc.currentFrame;
-			_endFrame = _beginFrame;
-			_currentFrame = _beginFrame;
-		}
 
 		private var _totalFrames:int;
 		public function get_totalFrames():int
@@ -58,7 +59,7 @@
 			return _currentFrame;
 		}
 
-		//private var _currentFrameLabel:String;
+
 		public function get_currentFrameLabel():String
 		{
 			return _mvc.currentFrameLabel;
@@ -84,9 +85,7 @@
 
 
 
-
-
-		private function p_checkEnterFrame(event:Event):void
+		private function pp_checkEnterFrame(evt:Event):void
 		{
 			var t_cn:uint = _frameCount + 1;
 			if (t_cn <= _frameCountEnd)
@@ -108,7 +107,7 @@
 
 		public function playStop():void
 		{
-			_mvc.removeEventListener(Event.ENTER_FRAME, p_checkEnterFrame);
+			_mvc.removeEventListener(Event.ENTER_FRAME, pp_checkEnterFrame);
 			_mvc.stop();
 			_frameCountEnd = 0;
 			_frameCount = 0;
@@ -125,7 +124,7 @@
 			_endFrame = endFrame;
 			_frameCountEnd = (_endFrame - _beginFrame);
 			_frameCount = 0;
-			_mvc.addEventListener(Event.ENTER_FRAME, p_checkEnterFrame);
+			_mvc.addEventListener(Event.ENTER_FRAME, pp_checkEnterFrame);
 			_mvc.play();
 		}
 
@@ -140,77 +139,11 @@
 		{
 			this.playGotoEnd(_currentFrame, endFrame);
 		}
-/*
-		public function playEndLabel(endFrameLabel:String):void
-		{
-			this.playGotoEnd(_currentFrame, endFrame);
-		}*/
 
 		public function play():void
 		{
 			this.playGotoEnd(_currentFrame, _totalFrames);
 		}
 
-
-
-
-
-
-
-
-
-/*
-		public function playEnd():void
-		{
-			if (_endFrame == _currentFrame) return;
-			_beginFrame = _currentFrame;
-			_endFrame = _owner.totalFrames;
-			_currentFrame = _beginFrame;
-			_frameCountEnd = _endFrame - _beginFrame;
-			_frameCount = 0;
-		}
-*/
-
-
-
-/*
-		public function gotoPlay(beginFrame:int, endFrame:int,
-									isStop:Boolean = false):void
-		{
-			if (beginFrame >= endFrame) return;
-
-			_beginFrame = beginFrame;
-			_endFrame = endFrame;
-			_is_stop = isStop;
-			_owner.addEventListener(Event.ENTER_FRAME, p_checkEnterFrame);
-			//p_checkEnterFrame(null);
-			if (_beginFrame < 1)
-			{
-				_owner.gotoAndPlay(_owner.currentFrame);
-				//_owner.play();
-			}
-			else
-			{
-				_owner.gotoAndPlay(_beginFrame);
-			}
-		}
-
-		public function gotoPlayLabel(beginFrameLabel:String, endFrameLabel:String,
-										isStop:Boolean = false):void
-		{
-		}
-
-
-
-		public function gotoPlayEnd(beginFrame:int, isStop:Boolean = false):void
-		{
-			this.gotoPlay(beginFrame, _owner.totalFrames, isStop);
-		}
-
-		public function playEnd(isStop:Boolean = false):void
-		{
-			this.gotoPlay(_owner.currentFrame, _owner.totalFrames, isStop);
-		}
-*/
 	}
 }

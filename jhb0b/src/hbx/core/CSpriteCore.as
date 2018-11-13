@@ -22,9 +22,9 @@
 			_stage = _container.stage;
 		}
 
-		protected static function p_test(tmsg:String):void
+		protected static function pp_test(msg:String):void
 		{
-			trace('[#hb] ' + tmsg);
+			trace('[#hb] ' + msg);
 		}
 
 
@@ -39,7 +39,7 @@
 		{
 			return _stage;
 		}
-		
+
 		protected var _enabled:Boolean = false;
 		public function get_enabled():Boolean
 		{
@@ -48,7 +48,7 @@
 		public function set_enabled(b:Boolean):void
 		{
 			_enabled = b;
-		}		
+		}
 
 
 		public function dispose():void

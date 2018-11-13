@@ -1,7 +1,7 @@
 ﻿package hbx.core
 {
 	import flash.display.Sprite;
-	
+
 
 	public class CSpriteWrapper extends CDisplayObjectWrapper
 	{
@@ -10,13 +10,13 @@
 			super(sprt);
 			_sprt = sprt;
 		}
-		
+
 		protected var _sprt:Sprite;
 		public function get_sprt():Sprite
 		{
 			return _sprt;
 		}
-		
+
 
 		public override function dispose():void
 		{
@@ -24,7 +24,7 @@
 			_sprt = null;
 			super.dispose();
 		}
-		
+
 	}
 
 }

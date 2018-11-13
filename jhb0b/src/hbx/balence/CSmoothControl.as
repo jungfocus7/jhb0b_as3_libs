@@ -6,10 +6,20 @@ package hbx.balence
 	import hbx.core.CDisplayObjectWrapper;
 	import hbx.core.CEventCore;
 
-	//
+
 	public class CSmoothControl extends CDisplayObjectWrapper
 	{
-		override public function dispose():void
+		public static const ET_END:String = MControlProxy.ET_END;
+		public static const ET_UPDATE:String = MControlProxy.ET_UPDATE;
+
+
+		public function CSmoothControl(tdo:DisplayObject, tprop:String)
+		{
+			super(tdo);
+			_prop = tprop;
+		}
+
+		public override function dispose():void
 		{
 			if (_content == null) return;
 			this.stop();
@@ -17,98 +27,77 @@ package hbx.balence
 			super.dispose();
 		}
 
-		//
-		//
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public static const ET_END:String = MControlProxy.ET_END;
-		public static const ET_UPDATE:String = MControlProxy.ET_UPDATE;
 
-		//
-		//::
-		public function CSmoothControl(tdo:DisplayObject, prop:String)
-		{
-			super(tdo);
-			_prop = prop;
-		}
-
-		//-
-		private var _prop:String = null;
+		private var _prop:String;
 		public function get_prop():String
 		{
 			return _prop;
 		}
 
-		//-
 		private var _endValue:Number;
 		public function get_endValue():Number
 		{
 			return _endValue;
 		}
 
-		//-
 		private var _nowValue:Number;
 		public function get_nowValue():Number
 		{
 			return _nowValue;
 		}
 
-		//-
 		private var _speed:Number = .6;
 		public function get_speed():Number
 		{
 			return _speed;
 		}
-		public function set_speed(v:Number):void
+		public function set_speed(tv:Number):void
 		{
-			_speed = v;
+			_speed = tv;
 		}
 
-		//::
-		private function p_enterFrame(event:Event):void
-		{
-			var t_dist:Number = _endValue - _nowValue;
 
-			if (Math.abs(t_dist) < 1)
+		private function pp_enterFrame(te:Event):void
+		{
+			var tdist:Number = _endValue - _nowValue;
+
+			if (Math.abs(tdist) < 1)
 			{
 				this.stop();
 
 				_nowValue = _endValue;
-				p_update();
+				pp_update();
 
 				this.dispatchEvent(new CEventCore(ET_END));
 			}
 			else
 			{
-				_nowValue = _nowValue + (t_dist * _speed);
-				this.p_update();
+				_nowValue = _nowValue + (tdist * _speed);
+				this.pp_update();
 
 				this.dispatchEvent(new CEventCore(ET_UPDATE));
 			}
 		}
 
-		//::
-		private function p_update():void
+		private function pp_update():void
 		{
 			_content[_prop] = _nowValue;
 		}
 
-		//::
-		public function to(endValue:Number):void
+
+		public function to(tev:Number):void
 		{
-			_endValue = endValue;
+			_endValue = tev;
 			_nowValue = _content[_prop];
 
-			_content.addEventListener(Event.ENTER_FRAME, p_enterFrame);
+			_content.addEventListener(Event.ENTER_FRAME, pp_enterFrame);
 		}
 
-		//::
 		public function stop():void
 		{
-			_content.removeEventListener(Event.ENTER_FRAME, p_enterFrame);
+			_content.removeEventListener(Event.ENTER_FRAME, pp_enterFrame);
 		}
 
-
-		//::
 		public function is_end():Boolean
 		{
 			if (_nowValue == _endValue)

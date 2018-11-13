@@ -1,7 +1,7 @@
 ﻿package hbx.core
 {
 	import flash.display.MovieClip;
-	
+
 
 	public class CMovieClipWrapper extends CDisplayObjectWrapper
 	{
@@ -10,13 +10,13 @@
 			super(mvc);
 			_mvc = mvc;
 		}
-		
+
 		protected var _mvc:MovieClip;
 		public function get_mvc():MovieClip
 		{
 			return _mvc;
 		}
-		
+
 
 		public override function dispose():void
 		{
@@ -24,7 +24,7 @@
 			_mvc = null;
 			super.dispose();
 		}
-		
+
 	}
 
 }

@@ -9,7 +9,19 @@ package hbx.balence
 
 	public class CValueControl extends CDisplayObjectWrapper
 	{
-		override public function dispose():void
+		public static const ET_END:String = MControlProxy.ET_END;
+		public static const ET_UPDATE:String = MControlProxy.ET_UPDATE;
+
+
+		public function CValueControl(tdo:DisplayObject, tprop:String, tminVal:Number = 0, tmaxVal:Number = 1)
+		{
+			super(tdo);
+			_prop = tprop;
+			_minValue = tminVal;
+			_maxValue = tmaxVal;
+		}
+
+		public override function dispose():void
 		{
 			if (_content == null) return;
 			this.stop();
@@ -17,123 +29,98 @@ package hbx.balence
 			super.dispose();
 		}
 
-		//
-		//
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		public static const ET_END:String = MControlProxy.ET_END;
-		public static const ET_UPDATE:String = MControlProxy.ET_UPDATE;
-
-		//::
-		public function CValueControl(tdo:DisplayObject, prop:String,
-										minValue:Number = 0, maxValue:Number = 1)
-		{
-			super(tdo);
-			_prop = prop;
-			_minValue = minValue;
-			_maxValue = maxValue;
-		}
-
-		//-
-		private var _prop:String = null;
+		private var _prop:String;
 		public function get_prop():String
 		{
 			return _prop;
 		}
 
-		//-
 		private var _minValue:Number = 0;
 		public function get_minValue():Number
 		{
 			return _minValue;
 		}
 
-		//-
 		private var _maxValue:Number = 1;
 		public function get_maxValue():Number
 		{
 			return _maxValue;
 		}
 
-		//-
 		private var _endValue:Number;
 		public function get_endValue():Number
 		{
 			return _endValue;
 		}
 
-		//-
 		private var _nowValue:Number;
 		public function get_nowValue():Number
 		{
 			return _nowValue;
 		}
 
-		//-
 		private var _valueDirection:int;
 
-		// -
+
 		private var _valueGap:Number = .2;
 		public function get_valueGap():Number
 		{
 			return _valueGap;
 		}
-		public function set_valueGap(v:Number):void
+		public function set_valueGap(tv:Number):void
 		{
-			_valueGap = v;
+			_valueGap = tv;
 		}
 
 
-		// ::
-		private function p_enterFrame(event:Event):void
+		private function pp_enterFrame(te:Event):void
 		{
-			var t_dist:Number = _endValue - _nowValue;
+			var tdist:Number = _endValue - _nowValue;
 
-			if (Math.abs(t_dist) < _valueGap)
+			if (Math.abs(tdist) < _valueGap)
 			{
 				this.stop();
 
 				_nowValue = _endValue;
-				p_update();
+				pp_update();
 
 				this.dispatchEvent(new CEventCore(ET_END));
 			}
 			else
 			{
 				_nowValue  = _nowValue + (_valueGap * _valueDirection);
-				p_update();
+				pp_update();
 
 				this.dispatchEvent(new CEventCore(ET_UPDATE));
 			}
 		}
 
-		//::
-		private function p_update():void
+		private function pp_update():void
 		{
-			_nowValue = p_correctValue(_nowValue);
+			_nowValue = pp_correctValue(_nowValue);
 			_content[_prop] = _nowValue;
 		}
 
-		//::
-		private function p_correctValue(v:Number):Number
+		private function pp_correctValue(tv:Number):Number
 		{
-			var t_rv:Number = v;
+			var trv:Number = tv;
 
-			if (t_rv < _minValue)
-				t_rv = _minValue;
+			if (trv < _minValue)
+				trv = _minValue;
 			else
-			if (t_rv > _maxValue)
-				t_rv = _maxValue;
+			if (trv > _maxValue)
+				trv = _maxValue;
 
-			return t_rv;
+			return trv;
 		}
 
-		//::
-		public function to(endValue:Number):void
+
+		public function to(tev:Number):void
 		{
-			_endValue = p_correctValue(endValue);
+			_endValue = pp_correctValue(tev);
 			_nowValue = _content[_prop];
-			p_test('_minValue: ' + _minValue);
-			p_test('_maxValue: ' + _maxValue);
+			pp_test('_minValue: ' + _minValue);
+			pp_test('_maxValue: ' + _maxValue);
 
 			if (_endValue < _nowValue)
 				_valueDirection = -1;
@@ -144,16 +131,14 @@ package hbx.balence
 			if (_endValue == _nowValue)
 				return;
 
-			_content.addEventListener(Event.ENTER_FRAME, p_enterFrame);
+			_content.addEventListener(Event.ENTER_FRAME, pp_enterFrame);
 		}
 
-		//::
 		public function stop():void
 		{
-			_content.removeEventListener(Event.ENTER_FRAME, p_enterFrame);
+			_content.removeEventListener(Event.ENTER_FRAME, pp_enterFrame);
 		}
 
-		//::
 		public function is_end():Boolean
 		{
 			if (_nowValue == _endValue)
@@ -161,9 +146,6 @@ package hbx.balence
 			else
 				return false;
 		}
-
-		//}}}
-		////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	}
 

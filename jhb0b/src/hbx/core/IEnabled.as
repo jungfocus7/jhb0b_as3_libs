@@ -4,6 +4,6 @@ package hbx.core
 	{
 		function get_enabled():Boolean;
 
-		function set_enabled(tb:Boolean):void;
+		function set_enabled(b:Boolean):void;
 	}
 }

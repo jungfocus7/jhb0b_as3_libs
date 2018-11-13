@@ -5,11 +5,11 @@ package hbx.core
 
 	public class CEventCore extends Event
 	{
-		public function CEventCore(type:String, tobj:Object = null,
-                            bubbles:Boolean = false, cancelable:Boolean = false)
+		public function CEventCore(
+			type:String, obj:Object = null, bubbles:Boolean = false, cancelable:Boolean = false)
 		{
             super(type, bubbles, cancelable);
-            _obj = tobj;
+            _obj = obj;
 		}
 
 		private var _obj:Object;

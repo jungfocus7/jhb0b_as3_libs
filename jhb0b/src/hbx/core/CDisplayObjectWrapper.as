@@ -13,10 +13,11 @@
 			_stage = _content.stage;
 		}
 
-		protected static function p_test(msg:String):void
+		protected static function pp_test(msg:String):void
 		{
 			trace('[#hb] ' + msg);
 		}
+
 
         protected var _content:DisplayObject;
 		public function get_content():DisplayObject
@@ -31,7 +32,7 @@
 		}
 
 
-		protected var _enabled:Boolean = false;
+		protected var _enabled:Boolean = true;
 		public function get_enabled():Boolean
 		{
 			return _enabled;
@@ -40,7 +41,6 @@
 		{
 			_enabled = b;
 		}
-
 
 
 		public function dispose():void
