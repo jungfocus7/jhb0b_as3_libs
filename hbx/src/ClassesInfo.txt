@@ -1,0 +1,52 @@
+@hbx.core : {
+    중요도 1
+    Library의 핵심이 되는 클래스 모음
+}
+
+
+@hbx.common : {
+    중요도 2
+    Library의 공통적인 클랙스 모음
+}
+
+
+@hbx.utils : {
+    중요도 3
+    Library의 유틸 클래스 모음
+}
+
+
+@hbx.tools : {
+    중요도 4
+    Library의 툴 클래스 모음
+}
+
+@hbx.prepared : {
+    중요도 5
+    Library의 보조성 클래스 모음
+}
+
+@hbx.useful : {
+    중요도 6
+    Library의 사용성 클래스 모음
+}
+
+@hbx.useful : {
+    중요도 7
+    Library의 사용성 클래스 모음
+}
+
+@hbx.balence : {
+    중요도 8
+    Library의 사용성 클래스 모음
+}
+
+@hbx.found : {
+    중요도 9
+    Library의 UI콤포넌트 클래스 모음
+}
+
+@hbx.media : {
+    중요도 10
+    Library의 미디어관련 콤포넌트 클래스 모음
+}
