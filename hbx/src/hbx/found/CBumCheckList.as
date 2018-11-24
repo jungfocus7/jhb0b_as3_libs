@@ -43,11 +43,11 @@ package hbx.found
 
 			for (var l:int = dpoc.numChildren, i:int = 0; i < l; i++)
 			{
-				var mc:MovieClip = dpoc.getChildAt(i) as MovieClip;
-				if ((mc != null) && (mc.name.indexOf(fstr) == 0))
+				var mvc:MovieClip = dpoc.getChildAt(i) as MovieClip;
+				if ((mvc != null) && (mvc.name.indexOf(fstr) == 0))
 				{
 					if (tarr == null) tarr = [];
-					tarr.push(mc);
+					tarr.push(mvc);
 				}
 			}
 
@@ -66,17 +66,17 @@ package hbx.found
 		public static const ET_CHANGE:String = Event.CHANGE;
 
 
-		public function CBumCheckList(targets:Array, frameArr:Array = null)
+		public function CBumCheckList(tarr:Array, frameArr:Array = null)
 		{
-			for (var l:uint = targets.length, i:uint = 0; i < l; i++)
+			for (var l:uint = tarr.length, i:uint = 0; i < l; i++)
 			{
-				var bbtn:CBumButton = new CBumButton(targets[i], frameArr, true, true);
+				var bbtn:CBumButton = new CBumButton(tarr[i], frameArr, true, true);
 				bbtn.addEventListener(CBumButton.ET_CLICK, pp_bbtn_click);
 				if (_items == null) _items = [];
 				_items.push(bbtn);
 				_dicIdx[bbtn] = i;
 			}
-			set_enabled(true);
+			pp_set_enabled(true);
 		}
 
 		public override function dispose():void
@@ -105,17 +105,19 @@ package hbx.found
 		}
 
 
+		private function pp_set_enabled(b:Boolean):void
+		{
+			_enabled = b;
+			for (var l:uint = _items.length, i:uint = 0; i < l; i ++)
+			{
+				var bbtn:CBumButton = _items[i];
+				bbtn.set_enabled(_enabled);
+			}
+		}
 		public override function set_enabled(b:Boolean):void
 		{
 			if (b != _enabled)
-			{
-				_enabled = b;
-				for (var l:uint = _items.length, i:uint = 0; i < l; i ++)
-				{
-					var bbtn:CBumButton = _items[i];
-					bbtn.set_enabled(_enabled);
-				}
-			}
+				pp_set_enabled(b);
 		}
 
 

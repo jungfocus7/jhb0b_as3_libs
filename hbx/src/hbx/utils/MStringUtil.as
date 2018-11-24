@@ -31,7 +31,7 @@ package hbx.utils
 		 * @param count: Count
 		 * @param token: TokenString
 		 */
-		public static function add_token(tstr:String, count:int, token:String = '0'):String
+		public static function fill_token(tstr:String, count:int, token:String = '0'):String
 		{
 			var l:int = count - tstr.length, i:int = 0;
 			while (i < l)
@@ -49,7 +49,7 @@ package hbx.utils
 		 * @param tstr: TargetString
 		 * @param astr:
 		 */
-		public static function rmfill(tstr:String, astr:String):String
+		public static function fill_rm(tstr:String, astr:String):String
 		{
 			var la:uint = tstr.length, lb:uint = astr.length;
 			if (la < lb)
@@ -171,43 +171,95 @@ package hbx.utils
 		}
 
 
+
 		/**
 		 * URL문자열 디코딩
 		 * <br/>
-		 * @param tstr: TargetString
+		 * @param turl: TargetUrl
 		 */
-		public static function get_thisUrl(tstr:String):String
+		public static function decode_url(turl:String):String
 		{
-			return decodeURIComponent(tstr);
+			return decodeURIComponent(turl);
 		}
+
+
+		/**
+		 * URL문자열 인코딩
+		 * <br/>
+		 * @param turl: TargetUrl
+		 */
+		public static function encode_url(turl:String):String
+		{
+			return encodeURIComponent(turl);
+		}
+
 
 
 		/**
 		 * 현재 파일 이름만 반환
 		 * <br/>
-		 * @param tstr: TargetString
-		 * @param extStr: ExtensionString
+		 * @param turl: TargetUrl
+		 * @param bDec: BooleanDecode
 		 */
-		public static function get_thisName(tstr:String, extStr:String = 'swf'):String
+		public static function get_thisName(turl:String, bDec:Boolean = false):String
 		{
-			var rv:String = null;
-			var si:int = tstr.lastIndexOf('/') + 1;
-			var ei:int = tstr.lastIndexOf('.' + extStr);
-			rv = tstr.substring(si, ei);
+			var rv:String = turl;
+			if (bDec) rv = decode_url(turl);
+
+			var si:int = rv.lastIndexOf('/') + 1;
+			var ei:int = rv.lastIndexOf('.swf');
+			rv = rv.substring(si, ei);
+
 			return rv;
 		}
 
 
 		/**
-		 * LoaderInfo.url에서 절대 경로 반환하기
+		 * 절대 경로 반환하기
 		 * <br/>
-		 * @param tstr: TargetString
+		 * @param turl: TargetUrl
+		 * @param bDec: BooleanDecode
 		 */
-		public static function get_baseUrl(tstr:String):String
+		public static function get_baseUrl(turl:String, bDec:Boolean = false):String
 		{
-			var rv:String = tstr;
-			var li:int = rv.lastIndexOf('/') + 1;
+			var rv:String = turl;
+			if (bDec) rv = decode_url(turl);
+
+			var li:int = rv.lastIndexOf('/');
 			rv = rv.substring(0, li);
+
+			return rv;
+		}
+
+
+		/**
+		 * 절대 경로에서 추가해서 반환
+		 * <br/>
+		 * @param turl: TargetUrl
+		 * @param bDec: BooleanDecode
+		 * @param strAdd: StringAdd
+		 */
+		public static function add_url(turl:String, bDec:Boolean = false, strAdd:String = ''):String
+		{
+			return get_baseUrl(turl, bDec) + strAdd;
+		}
+
+
+		/**
+		 * 절대 경로에서 추가해서 반환
+		 * <br/>
+		 * @param turl: TargetUrl
+		 * @param bDec: BooleanDecode
+		 * @param strExt: StringExtension
+		 */
+		public static function add_ext(turl:String, bDec:Boolean = false, strExt:String = '.xml'):String
+		{
+			var rv:String = turl;
+			if (bDec) rv = decode_url(turl);
+
+			var ei:int = rv.lastIndexOf('.swf');
+			rv = rv.substring(0, ei) + strExt;
+
 			return rv;
 		}
 

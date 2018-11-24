@@ -5,11 +5,13 @@
 
 	public class CEventDispatcherCore extends EventDispatcher implements IEnabled, IDisposable
 	{
+
 		public function CEventDispatcherCore()
 		{
 		}
 
-		protected var _enabled:Boolean = false;
+
+		protected var _enabled:Boolean = true;
 		public function get_enabled():Boolean
 		{
 			return _enabled;
@@ -22,6 +24,7 @@
 		public function dispose():void
 		{
 		}
+
 	}
 
 }

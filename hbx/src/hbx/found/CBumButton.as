@@ -27,7 +27,8 @@ package hbx.found
 			_frameArr = (frameArr == null) ? _DEFAULT_FRAME_ARR : frameArr;
 			_isToggleMode = isToggleMode;
 			_isListMode = isListMode;
-			set_enabled(true);
+			_enabled = false;
+			pp_set_enabled(true);
         }
 
 
@@ -57,32 +58,36 @@ package hbx.found
 		}
 
 
+
+
+		private function pp_set_enabled(b:Boolean):void
+		{
+			_enabled = b;
+			if (_enabled)
+			{
+				_mvc.mouseChildren = false;
+				_mvc.buttonMode = true;
+				_mvc.addEventListener(MouseEvent.ROLL_OUT, pp_mvc_rollOut);
+				_mvc.addEventListener(MouseEvent.ROLL_OVER, pp_mvc_rollOver);
+				_mvc.addEventListener(MouseEvent.MOUSE_UP, pp_mvc_mouseUp);
+				_mvc.addEventListener(MouseEvent.MOUSE_DOWN, pp_mvc_mouseDown);
+				_mvc.addEventListener(MouseEvent.CLICK, pp_mvc_click);
+			}
+			else
+			{
+				_mvc.mouseChildren = true;
+				_mvc.buttonMode = false;
+				_mvc.removeEventListener(MouseEvent.ROLL_OUT, pp_mvc_rollOut);
+				_mvc.removeEventListener(MouseEvent.ROLL_OVER, pp_mvc_rollOver);
+				_mvc.removeEventListener(MouseEvent.MOUSE_UP, pp_mvc_mouseUp);
+				_mvc.removeEventListener(MouseEvent.MOUSE_DOWN, pp_mvc_mouseDown);
+				_mvc.removeEventListener(MouseEvent.CLICK, pp_mvc_click);
+			}
+		}
 		public override function set_enabled(b:Boolean):void
 		{
 			if (b != _enabled)
-			{
-				_enabled = b;
-				if (_enabled)
-				{
-					_mvc.mouseChildren = false;
-					_mvc.buttonMode = true;
-					_mvc.addEventListener(MouseEvent.ROLL_OUT, pp_mvc_rollOut);
-					_mvc.addEventListener(MouseEvent.ROLL_OVER, pp_mvc_rollOver);
-					_mvc.addEventListener(MouseEvent.MOUSE_UP, pp_mvc_mouseUp);
-					_mvc.addEventListener(MouseEvent.MOUSE_DOWN, pp_mvc_mouseDown);
-					_mvc.addEventListener(MouseEvent.CLICK, pp_mvc_click);
-				}
-				else
-				{
-					_mvc.mouseChildren = true;
-					_mvc.buttonMode = false;
-					_mvc.removeEventListener(MouseEvent.ROLL_OUT, pp_mvc_rollOut);
-					_mvc.removeEventListener(MouseEvent.ROLL_OVER, pp_mvc_rollOver);
-					_mvc.removeEventListener(MouseEvent.MOUSE_UP, pp_mvc_mouseUp);
-					_mvc.removeEventListener(MouseEvent.MOUSE_DOWN, pp_mvc_mouseDown);
-					_mvc.removeEventListener(MouseEvent.CLICK, pp_mvc_click);
-				}
-			}
+				pp_set_enabled(b);
 		}
 
 

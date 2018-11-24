@@ -5,7 +5,7 @@ package hbx.prepared
 
 	public final class MNumArr
 	{
-		//::
+		//:: 합계
 		public static function GetSum(tNumArr:Array):Number
 		{
 			if (tNumArr == null) return NaN;
@@ -19,7 +19,7 @@ package hbx.prepared
 			return tSum;
 		}
 
-		//::
+		//:: 메디안
 		public static function GetMedian(tNumArr:Array):Number
 		{
 			if (tNumArr == null) return NaN;
@@ -42,7 +42,7 @@ package hbx.prepared
 		}
 
 
-		//::
+		//:: 평균
 		public static function GetAverage(tNumArr:Array):Number
 		{
 			if (tNumArr == null) return NaN;
@@ -55,7 +55,7 @@ package hbx.prepared
 			return tSum / tNumArr.length;
 		}
 
-		//::
+		//:: 발리언스
 		public static function GetVariance(tNumArr:Array):Number
 		{
 			if (tNumArr == null) return NaN;
@@ -69,7 +69,7 @@ package hbx.prepared
 			return tSum / (tNumArr.length - 1);
 		}
 
-		//::
+		//:: 에버리지 케이스
 		public static function GetAverageCase(tTableHeaderArr:Array, tTableArr:Array, tColcType:String):Number
 		{
 			var tci:uint = 0;

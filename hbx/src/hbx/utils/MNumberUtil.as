@@ -52,9 +52,20 @@ package hbx.utils
 		 * <br/>
 		 * @param v: Value
 		 */
-		public static function is_oddEven(v:Number):Boolean
+		public static function is_odd(v:Number):Boolean
 		{
 			return ((v % 2) > 0);
+		}
+
+
+		/**
+		 * 짝수인지 여부
+		 * <br/>
+		 * @param v: Value
+		 */
+		public static function is_even(v:Number):Boolean
+		{
+			return ((v % 2) == 0);
 		}
 
 	}

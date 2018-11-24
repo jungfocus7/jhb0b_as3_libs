@@ -3,9 +3,11 @@
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.utils.Dictionary;
 
 	import hbx.core.CEventCore;
 	import hbx.core.CEventDispatcherCore;
+	import flash.display.DisplayObject;
 
 
 
@@ -13,76 +15,107 @@
 	public final class CLoaderWrapperCollection extends CEventDispatcherCore
 	{
 		public static const ET_COMPLETE:String = Event.COMPLETE;
+		public static const ET_COMPLETE_ALL:String = Event.COMPLETE + 'All';
 
 
 		public override function dispose():void
 		{
-			if (_lws == null) return;
-
-			for each (var lw:CLoaderWrapper in _lws)
+			if (_arr == null) return;
+			for each (var lw:CLoaderWrapper in _arr)
 			{
 				var ldi:LoaderInfo = lw.get_loaderInfo();
 				ldi.removeEventListener(IOErrorEvent.IO_ERROR, pp_ioErrorHandler);
 				ldi.removeEventListener(Event.COMPLETE, pp_completeHandler);
 				lw.dispose();
 			}
-
-			_lws = null;
+			_diclw = null;
+			_dicidx = null;
+			_templw = null;
+			_arr = null;
 		}
 
-		public function CLoaderWrapperCollection(lws:Array)
+		public function CLoaderWrapperCollection(arr:Array)
 		{
-			_lws = lws;
-			_seqEnd = _lws.length;
-			_seq = 0;
-
-			for (var i:uint = 0; i < _seqEnd; i++)
+			_arr = arr;
+			_diclw = new Dictionary();
+			_dicidx = new Dictionary();
+			_countEnd = _arr.length;
+			_count = 0;
+			for (var i:uint = 0; i < _countEnd; i++)
 			{
-				var lw:CLoaderWrapper = _lws[i];
+				var lw:CLoaderWrapper = _arr[i];
 				var ldi:LoaderInfo = lw.get_loaderInfo();
 				ldi.addEventListener(IOErrorEvent.IO_ERROR, pp_ioErrorHandler);
 				ldi.addEventListener(Event.COMPLETE, pp_completeHandler);
+				_diclw[ldi] = lw;
+				_dicidx[ldi] = i;
 			}
 		}
 
+
+
 		//-- LoaderWrapperArray
-		private var _lws:Array = null;
-		public function get_lws():Array
+		private var _arr:Array = null;
+		public function get_arr():Array
 		{
-			return _lws;
+			return _arr;
 		}
+
+
+		//--
+		private var _diclw:Dictionary;
+		private var _templw:CLoaderWrapper;
+		public function get_lw():CLoaderWrapper
+		{
+			return _templw;
+		}
+
+
+		//--
+		private var _dicidx:Dictionary;
+		private var _tempidx:uint;
+		public function get_idx():uint
+		{
+			return _tempidx;
+		}
+
+
+		//-- 로드 카운트 끝
+		private var _countEnd:uint;
+		public function get_countEnd():uint
+		{
+			return _countEnd;
+		}
+
+
+		//-- 로드 시퀀스
+		private var _count:uint;
+		public function get_count():uint
+		{
+			return _count;
+
+		}
+
 
 
 		/**
 		 * 로더들 완료 체킹
 		 */
-		public function pp_loadedCheck():void
+		public function pp_loadedCheck(ldi:LoaderInfo):void
 		{
-			if (_seq < _seqEnd)
+			if (_count < _countEnd)
 			{
-				_seq++;
-				if (_seq >= _seqEnd)
+				_count++;
+
+				_templw = _diclw[ldi];
+				_tempidx = _dicidx[ldi];
+				this.dispatchEvent(new CEventCore(ET_COMPLETE));
+
+				if (_count >= _countEnd)
 				{
-					this.dispatchEvent(new CEventCore(ET_COMPLETE));
+					this.dispatchEvent(new CEventCore(ET_COMPLETE_ALL));
 				}
 			}
-		}
-
-
-		//-- 로드 카운트 끝
-		private var _seqEnd:uint;
-		public function get_seqEnd():uint
-		{
-			return _seqEnd;
-		}
-
-
-		//-- 로드 시퀀스
-		private var _seq:uint;
-		public function get_seq():uint
-		{
-			return _seq;
-
 		}
 
 
@@ -93,7 +126,7 @@
 		 */
 		private function pp_ioErrorHandler(evt:IOErrorEvent):void
 		{
-			pp_loadedCheck();
+			pp_loadedCheck(LoaderInfo(evt.currentTarget));
 		}
 
 
@@ -104,7 +137,7 @@
 		 */
 		private function pp_completeHandler(evt:Event):void
 		{
-			pp_loadedCheck();
+			pp_loadedCheck(LoaderInfo(evt.currentTarget));
 		}
 
 
@@ -114,7 +147,7 @@
 		 */
 		public function close():void
 		{
-			for each (var lw:CLoaderWrapper in _lws)
+			for each (var lw:CLoaderWrapper in _arr)
 			{
 				lw.close();
 			}
@@ -127,8 +160,8 @@
 		 */
 		public function load():void
 		{
-			_seq = 0;
-			for each (var lw:CLoaderWrapper in _lws)
+			_count = 0;
+			for each (var lw:CLoaderWrapper in _arr)
 			{
 				lw.load();
 			}

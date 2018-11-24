@@ -16,13 +16,13 @@
 			//trace('td1.seconds: ' + td1.seconds);
 			//trace('td1.milliseconds: ' + td1.milliseconds);
 
-			var tyear:String = MStringUtil.add_token(td1.fullYear.toString(), 4);
-			var tmonth:String = MStringUtil.add_token((td1.month + 1).toString(), 2);
-			var tdate:String = MStringUtil.add_token(td1.date.toString(), 2);
-			var thours:String = MStringUtil.add_token(td1.hours.toString(), 2);
-			var tminutes:String = MStringUtil.add_token(td1.minutes.toString(), 2);
-			var tseconds:String = MStringUtil.add_token(td1.seconds.toString(), 2);
-			var tmilliseconds:String = MStringUtil.add_token(td1.milliseconds.toString(), 3);
+			var tyear:String = MStringUtil.fill_token(td1.fullYear.toString(), 4);
+			var tmonth:String = MStringUtil.fill_token((td1.month + 1).toString(), 2);
+			var tdate:String = MStringUtil.fill_token(td1.date.toString(), 2);
+			var thours:String = MStringUtil.fill_token(td1.hours.toString(), 2);
+			var tminutes:String = MStringUtil.fill_token(td1.minutes.toString(), 2);
+			var tseconds:String = MStringUtil.fill_token(td1.seconds.toString(), 2);
+			var tmilliseconds:String = MStringUtil.fill_token(td1.milliseconds.toString(), 3);
 			var trv:String = tyear + tmonth + tdate + thours + tminutes + tseconds + tmilliseconds;
 
 			return trv;

@@ -14,7 +14,7 @@
 
 		private static function ppSmartReplace(patt:String, dt:Date):String
 		{
-			var strms:String = MStringUtil.add_token(dt.milliseconds.toString(), 3);
+			var strms:String = MStringUtil.fill_token(dt.milliseconds.toString(), 3);
 			var strrv:String = patt.replace(_regf,
 				function():String
 				{

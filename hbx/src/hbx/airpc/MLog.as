@@ -32,13 +32,13 @@
 			var ms:Number = dt.milliseconds;
 
 			var rv:String	=
-				MStringUtil.add_token(yy.toString().substr(2, 2), 2) +
-				MStringUtil.add_token(mm.toString(), 2) +
-				MStringUtil.add_token(dd.toString(), 2) +
-				MStringUtil.add_token(hh.toString(), 2) +
-				MStringUtil.add_token(mi.toString(), 2) +
-				MStringUtil.add_token(ss.toString(), 2) +
-				MStringUtil.add_token(ms.toString(), 3);
+				MStringUtil.fill_token(yy.toString().substr(2, 2), 2) +
+				MStringUtil.fill_token(mm.toString(), 2) +
+				MStringUtil.fill_token(dd.toString(), 2) +
+				MStringUtil.fill_token(hh.toString(), 2) +
+				MStringUtil.fill_token(mi.toString(), 2) +
+				MStringUtil.fill_token(ss.toString(), 2) +
+				MStringUtil.fill_token(ms.toString(), 3);
 			return rv;
 		}
 

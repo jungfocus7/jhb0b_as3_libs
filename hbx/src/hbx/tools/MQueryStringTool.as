@@ -8,7 +8,7 @@ MQueryStringTool.to_obj('name=Hobis&job=Developer');
 ==================================================================================================== */
 package hbx.tools
 {
-	public class MQueryStringTool
+	public final class MQueryStringTool
 	{
 		/**
 		 * ParamObj -> QueryString

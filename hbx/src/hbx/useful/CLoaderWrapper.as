@@ -1,5 +1,6 @@
 ﻿package hbx.useful
 {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -53,18 +54,28 @@
 			}
 		}
 
-		//-- 로더객체 반환
+
+		//-- 로더 반환
 		private var _loader:Loader;
 		public function get_loader():Loader
 		{
 			return _loader;
 		}
 
-		//-- 로더객체 반환
+
+		//-- 로더인포 반환
 		public function get_loaderInfo():LoaderInfo
 		{
 			return _loader.contentLoaderInfo;
 		}
+
+
+		//-- 로더컨텐트 반환
+		public function get_loaderContent():DisplayObject
+		{
+			return _loader.content;
+		}
+
 
 		//-- 완료 핸들러 참조
 		private var _completeHandler:Function;
@@ -73,6 +84,7 @@
 			return _completeHandler;
 		}
 
+
 		//-- 진행 핸들러 참조
 		private var _progressHandler:Function;
 		public function get_progressHandler():Function
@@ -80,12 +92,14 @@
 			return _progressHandler;
 		}
 
+
 		//-- 에러 핸들러 참조
 		private var _ioErrorHandler:Function;
 		public function get_ioErrorHandler():Function
 		{
 			return _ioErrorHandler;
 		}
+
 
 
 		/**
@@ -179,8 +193,8 @@
 		/**
 		 * 로드
 		 * <br/>
-		 * @param ureq:
-		 * @param ldc:
+		 * @param ureq: URLRequest
+		 * @param ldc: LoaderContext
 		 */
 		public function load(ureq:URLRequest = null, ldc:LoaderContext = null):void
 		{
@@ -205,7 +219,7 @@
 		 * 로드
 		 * <br/>
 		 * @param url: UrlString
-		 * @param ldc:
+		 * @param ldc: LoaderContext
 		 */
 		public function load2(url:String, ldc:LoaderContext = null):void
 		{
